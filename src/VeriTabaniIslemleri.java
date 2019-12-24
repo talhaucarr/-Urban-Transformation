@@ -17,7 +17,12 @@ public class VeriTabaniIslemleri {
     
     private PreparedStatement preparedStatement = null;
     
+    
+    
     class CalisanVeriTabaniIslemleri{
+        
+        public int bayrak ;
+        
         
             public void calisanSil(int id){
         
@@ -63,9 +68,38 @@ public class VeriTabaniIslemleri {
     public void calisanEkle(String ad,String soyad,String dept,String email,int telno,int maas){
         
         String sorgu = "Insert into calisanlar(ad,soyad,calistigiBolum,email,telNo,maas) VALUES(?,?,?,?,?,?)";
-        
+        bayrak = 1;
         
         try {
+            statement = con.createStatement();
+            
+            String sorgu2 = "Select * from firma";
+            
+            ResultSet rs = statement.executeQuery(sorgu2);
+            
+            
+            while(rs.next()){
+                
+                
+                String adi = rs.getString("firmaAdi");
+                System.out.println(adi);
+                if (adi.equals(dept)){
+                    
+                    bayrak = 1;
+                    break;
+                }
+                else{
+                    
+                     bayrak =0;
+                    
+                }
+                
+                
+                
+            }
+            
+            if(bayrak ==1){
+                try {
             preparedStatement = con.prepareStatement(sorgu);
             
             preparedStatement.setString(1, ad);
@@ -80,6 +114,15 @@ public class VeriTabaniIslemleri {
         } catch (SQLException ex) {
             Logger.getLogger(VeriTabaniIslemleri.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VeriTabaniIslemleri.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } 
+        
+        
+        
         
     }
     
@@ -95,6 +138,7 @@ public class VeriTabaniIslemleri {
             String sorgu = "Select * from calisanlar";
             
             ResultSet rs = statement.executeQuery(sorgu);
+            
             
             while(rs.next()){
                 
@@ -216,13 +260,39 @@ public class VeriTabaniIslemleri {
     
     class yikilcakEvVeriTabaniIslemleri{
         
-        
+        public int bayrak2;
         
         public void yikilcakEvEkle(String il,String ilçe,String mahalle,String cadde,String binaAdi,int binaNo,int mKare,String firmaAdi,int yikmaMaliyeti,String yikmaSuresi ){
             
             String sorgu = "Insert into yikilcakev(il,ilce,mahalle,cadde,binaAdi,binaNo,binaArsaMKare,yikicakFirma,yikmaMaliyet,yikmaSuresi) VALUES(?,?,?,?,?,?,?,?,?,?)";
             
-            try {
+            bayrak2 = 1;
+        
+            try{
+            statement = con.createStatement();
+            
+            String sorgu2 = "Select * from firma";
+            
+            ResultSet rs = statement.executeQuery(sorgu2);
+            
+            
+            while(rs.next()){
+                
+                
+                String adi = rs.getString("firmaAdi");
+                System.out.println(adi);
+                if (adi.equals(firmaAdi)){
+                    
+                    bayrak2 = 1;
+                    break;
+                }
+                else{
+                    
+                     bayrak2 =0;
+                    
+                }
+                
+                try {
                 preparedStatement = con.prepareStatement(sorgu);
                 
                 preparedStatement.setString(1, il);
@@ -241,6 +311,15 @@ public class VeriTabaniIslemleri {
             } catch (SQLException ex) {
                 Logger.getLogger(VeriTabaniIslemleri.class.getName()).log(Level.SEVERE, null, ex);
             }
+                
+            }
+        }
+            catch (SQLException ex) {
+            Logger.getLogger(VeriTabaniIslemleri.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } 
+            
+            
             
         }
         
@@ -331,10 +410,39 @@ public class VeriTabaniIslemleri {
     
     class yeniEvVeriTabaniIslemleri{
         
+        public int bayrak3;
+        
         public void yeniEvEkle(String il,String ilçe,String mahalle,String cadde,String binaAdi,int binaNo,int mKare,int katSayisi,String firmaAdi,int yapilmaMaliyeti,String yikmaSuresi ){
             
             String sorgu = "Insert into yeniev(il,ilce,mahalle,cadde,yeniAptAd,aptNo,arsaMKare,katSayisi,YapiciFirma,yapilmaMaliyet,yapilmaSuresi) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             
+            try {
+            statement = con.createStatement();
+            
+            String sorgu2 = "Select * from firma";
+            
+            ResultSet rs = statement.executeQuery(sorgu2);
+            
+            
+            while(rs.next()){
+                
+                
+                String adi = rs.getString("firmaAdi");
+                System.out.println(adi);
+                if (adi.equals(firmaAdi)){
+                    
+                    bayrak3 = 1;
+                    break;
+                }
+                else{
+                    
+                     bayrak3 =0;
+                    
+                }
+                
+                
+                
+            }
             try {
                 preparedStatement = con.prepareStatement(sorgu);
                 
@@ -355,6 +463,14 @@ public class VeriTabaniIslemleri {
             } catch (SQLException ex) {
                 Logger.getLogger(VeriTabaniIslemleri.class.getName()).log(Level.SEVERE, null, ex);
             }
+            }
+            catch (SQLException ex) {
+            Logger.getLogger(VeriTabaniIslemleri.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } 
+            
+            
+            
             
             
         }
@@ -515,7 +631,9 @@ public class VeriTabaniIslemleri {
     
     public static void main(String[] args) {
         
-        VeriTabaniIslemleri islemler = new VeriTabaniIslemleri();
+        //VeriTabaniIslemleri islemler = new VeriTabaniIslemleri();
+        VeriTabaniIslemleri.CalisanVeriTabaniIslemleri islemler = new VeriTabaniIslemleri(). new CalisanVeriTabaniIslemleri();
+        
         
     }   
 }
